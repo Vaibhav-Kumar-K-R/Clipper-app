@@ -33,9 +33,9 @@ const corsOptions: cors.CorsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
 const uploadsDir = path.join(__dirname, "../uploads");
-console.log(`Uploads directory: ${uploadsDir}`);
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
@@ -44,10 +44,17 @@ const jobsDir = path.join(__dirname, "../jobs");
 if (!fs.existsSync(jobsDir)) {
     fs.mkdirSync(jobsDir);
 }
-console.log(`Jobs directory: ${jobsDir}`);
+
 
 app.use("/api/clip", clipRouter);
 
+app.post('/post',(req,res)=>{
+  console.log(req.body);
+  return res.json({
+    message:"Done"
+  })
+  
+})
 app.get("/api/ping", (_req, res) => {
     return res.json({ success: true });
 });
@@ -57,3 +64,5 @@ app.get("/", (req, res) => res.send("Server is running!"));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+
