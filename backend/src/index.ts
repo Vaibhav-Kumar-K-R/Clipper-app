@@ -23,7 +23,7 @@ const port = process.env.PORT || 3001;
 
 const allowedOrigin =
     process.env.NODE_ENV === "production"
-        ? "https://clippa.in"
+        ? "https://ytclipper.com"
         : "http://localhost:3000";
 
 const corsOptions: cors.CorsOptions = {
@@ -48,18 +48,13 @@ if (!fs.existsSync(jobsDir)) {
 
 app.use("/api/clip", clipRouter);
 
-app.post('/post',(req,res)=>{
-  console.log(req.body);
-  return res.json({
-    message:"Done"
-  })
-  
-})
+
+
+app.get("/", (req, res) => res.send("Server is running!"));
+
 app.get("/api/ping", (_req, res) => {
     return res.json({ success: true });
 });
-
-app.get("/", (req, res) => res.send("Server is running!"));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
