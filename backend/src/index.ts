@@ -1,9 +1,8 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import path from "path";
 import fs from "fs";
-import { createClient } from "@supabase/supabase-js";
+import path from "path";
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
 import clipRouter from "./routes/clip.route";
 
 dotenv.config();
@@ -14,9 +13,6 @@ const bucketName = process.env.SUPABASE_BUCKET || "videos";
 if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase credentials are needed");
 }
-const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false },
-});
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -33,7 +29,7 @@ const corsOptions: cors.CorsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }));
 
 const uploadsDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadsDir)) {
@@ -45,10 +41,7 @@ if (!fs.existsSync(jobsDir)) {
     fs.mkdirSync(jobsDir);
 }
 
-
 app.use("/api/clip", clipRouter);
-
-
 
 app.get("/", (req, res) => res.send("Server is running!"));
 
@@ -59,5 +52,3 @@ app.get("/api/ping", (_req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-
